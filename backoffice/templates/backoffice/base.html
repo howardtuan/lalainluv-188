@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}商店管理｜Lalainluv{% endblock %}
+{% block announcement %}<span>Lalainluv 商店管理</span><span class="announcement__divider">/</span><span>訂單人工確認・未串接金流</span>{% endblock %}
+{% block header_actions %}
+<a class="header-action" href="{% url 'core:home' %}"><svg class="icon"><use href="#i-home"/></svg><span>查看商店</span></a>
+<div class="member-dropdown"><button class="header-action" id="memberToggle" aria-label="管理員選單" aria-expanded="false" aria-controls="memberMenu"><svg class="icon"><use href="#i-user"/></svg><span class="desktop-label">管理員</span></button><div id="memberMenu" class="dropdown-menu" hidden><a href="{% url 'core:home' %}">返回商店</a><form method="post" action="{% url 'backoffice:logout' %}">{% csrf_token %}<button type="submit">登出管理員</button></form></div></div>
+{% endblock %}
+{% block sidebar_content %}
+<div class="sidebar__intro">Behind the little joys.<span>好好經營，每一份喜歡。</span></div>
+<nav class="sidebar__nav manage-nav">
+  <a class="nav-home {% if active_section == 'dashboard' %}is-active{% endif %}" href="{% url 'backoffice:dashboard' %}"><svg class="icon"><use href="#i-home"/></svg>管理總覽</a>
+  <a class="nav-home {% if active_section == 'orders' %}is-active{% endif %}" href="{% url 'backoffice:orders' %}"><svg class="icon"><use href="#i-bag"/></svg>訂單管理</a>
+  <a class="nav-home {% if active_section == 'products' %}is-active{% endif %}" href="{% url 'backoffice:products' %}"><svg class="icon"><use href="#i-box"/></svg>商品與庫存</a>
+  <a class="nav-home {% if active_section == 'categories' %}is-active{% endif %}" href="{% url 'backoffice:categories' %}"><svg class="icon"><use href="#i-menu"/></svg>商品分類</a>
+  <a class="nav-home {% if active_section == 'banners' %}is-active{% endif %}" href="{% url 'backoffice:banners' %}"><svg class="icon"><use href="#i-sparkles"/></svg>首頁輪播</a>
+  <a class="nav-home {% if active_section == 'wishes' %}is-active{% endif %}" href="{% url 'backoffice:wishes' %}"><svg class="icon"><use href="#i-heart"/></svg>許願回覆</a>
+  <a class="nav-home {% if active_section == 'settings' %}is-active{% endif %}" href="{% url 'backoffice:settings' %}"><svg class="icon"><use href="#i-check"/></svg>網站資訊</a>
+</nav>
+<div class="sidebar__footer"><p>管理員登入中<span>Local account · 安全登入</span></p><a href="{% url 'core:home' %}">← 返回前台商店</a><span class="sidebar__signature">with care, Lalainluv ♡</span></div>
+{% endblock %}

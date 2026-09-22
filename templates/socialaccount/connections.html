@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}管理帳號綁定｜Lalainluv{% endblock %}
+{% block content %}<div class="narrow-page"><div class="page-heading"><div><h1>管理已連結帳號</h1><p>一般會員需保留至少一個 LINE 或 Google 帳號，未來可直接使用社群帳號登入。</p></div></div><div class="form-panel">
+{% if form.errors %}<div class="form-error" role="alert">{{ form.non_field_errors }}{{ form.account.errors }}</div>{% endif %}
+{% for account in form.accounts %}<form method="post" class="connected-account">{% csrf_token %}<div><strong>{{ account.provider|title }}</strong><p>{{ account.get_provider_account }}</p></div><button class="btn btn--outline" type="submit" name="account" value="{{ account.pk }}">解除連結</button></form>{% empty %}<p>目前尚未綁定 LINE 或 Google。</p>{% endfor %}
+<a class="btn btn--primary mt-24" href="{% url 'accounts:connections' %}">新增或查看綁定 →</a></div></div>{% endblock %}

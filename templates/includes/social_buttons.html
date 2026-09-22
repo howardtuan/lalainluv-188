@@ -1,0 +1,12 @@
+{% load socialaccount %}
+<div class="social-buttons" aria-label="社群帳號登入">
+  {% for provider in social_providers %}
+    {% if provider.enabled %}
+    <form method="post" action="{% provider_login_url provider.id process=process next=auth_next %}">
+      {% csrf_token %}
+      <button class="btn btn--outline btn--full social-button social-button--{{ provider.id }}" type="submit">{% if process == 'connect' %}綁定{% else %}使用{% endif %} {{ provider.label }} {% if process != 'connect' %}登入{% endif %}<span aria-hidden="true">↗</span></button>
+    </form>
+    {% else %}<button class="btn btn--outline btn--full social-button" type="button" disabled>{{ provider.label }} · 尚未啟用</button>{% endif %}
+  {% endfor %}
+</div>
+{% if not social_login_available %}<p class="help-text">LINE／Google 尚待商店設定。一般會員需完成其中一項綁定，才能使用會員功能。</p>{% endif %}

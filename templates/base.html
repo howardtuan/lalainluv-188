@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#b69b84">
+  <title>{% block title %}Lalainluv｜拉拉熊日本代購{% endblock %}</title>
+  <meta name="description" content="Lalainluv 拉拉熊（Rilakkuma）日本代購。拉拉熊玩偶、收藏盲盒與生活周邊，把療癒帶回日常。">
+  <link rel="icon" href="{% static 'images/favicon.svg' %}" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <script src="{% static 'js/main.js' %}" defer></script>
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <a class="skip-link" href="#main">跳至主要內容</a>
+  {% include 'includes/icons.html' %}
+  <div class="announcement">{% block announcement %}<span>日本拉拉熊代購，收藏療癒日常</span><span class="announcement__divider">/</span><span>全館滿 NT$ 2,000 免運</span><svg class="icon"><use href="#i-sparkles"/></svg>{% endblock %}</div>
+  <header class="header">
+    <button class="header-action menu-toggle" id="menuToggle" aria-label="開啟選單" aria-expanded="false" aria-controls="sidebar"><svg class="icon"><use href="#i-menu"/></svg><span>選單</span></button>
+    <a class="brand" href="{% url 'core:home' %}" aria-label="Lalainluv 首頁">Lalainluv<span>Rilakkuma & lovely days.</span></a>
+    <div class="header__actions">
+      {% block header_actions %}
+      <a href="{% url 'products:list' %}" class="icon-button header-search" aria-label="搜尋商品"><svg class="icon"><use href="#i-search"/></svg></a>
+      <a href="{% url 'orders:cart' %}" class="header-action cart-link"><svg class="icon"><use href="#i-bag"/></svg><span class="desktop-label">購物車</span><span class="cart-badge" aria-label="購物車商品數">{{ cart_count }}</span></a>
+      <div class="member-dropdown">
+        <button class="header-action" id="memberToggle" aria-label="會員中心" aria-expanded="false" aria-controls="memberMenu"><svg class="icon"><use href="#i-user"/></svg><span class="desktop-label">會員中心</span><svg class="icon icon--small desktop-label"><use href="#i-chevron-down"/></svg></button>
+        <div id="memberMenu" class="dropdown-menu" hidden>
+          {% if user.is_authenticated %}
+          <a href="{% url 'accounts:profile' %}">我的帳號</a>
+          <a href="{% url 'accounts:connections' %}">LINE／Google 綁定</a>
+          {% if user.is_staff %}<a href="{% url 'backoffice:dashboard' %}">商店管理後台</a>{% endif %}
+          {% else %}<a href="{% url 'account_login' %}">會員登入</a><a href="{% url 'account_signup' %}">加入會員</a>{% endif %}
+          <a href="{% url 'orders:order_list' %}">訂單查詢</a><a href="{% url 'orders:wish_list' %}">我的許願</a>
+          {% if user.is_authenticated %}<form method="post" action="{% url 'account_logout' %}">{% csrf_token %}<button type="submit">登出</button></form>{% endif %}
+        </div>
+      </div>
+      {% endblock %}
+    </div>
+  </header>
+  <button class="sidebar-overlay" id="sidebarOverlay" aria-label="關閉選單" hidden></button>
+  <aside class="sidebar" id="sidebar" aria-label="網站導覽">
+    {% block sidebar_content %}
+    <div class="sidebar__intro">A little joy, every day.<span>拉拉熊，日常的療癒陪伴。</span></div>
+    <nav class="sidebar__nav">
+      <a class="nav-home {% if request.path == '/' %}is-active{% endif %}" href="{% url 'core:home' %}"><svg class="icon"><use href="#i-home"/></svg>首頁<span class="nav-dot"></span></a>
+      <div class="nav-group">
+        <a class="nav-heading" href="{% url 'products:list' %}?collection=hot"><svg class="icon"><use href="#i-sparkles"/></svg>現正熱賣</a>
+        {% for nav_category in store_categories %}<a class="nav-link {% if category.pk == nav_category.pk %}is-active{% endif %}" href="{% url 'products:category' nav_category.slug %}">{{ nav_category.name }}<span>↗</span></a>{% endfor %}
+      </div>
+      <div class="nav-group">
+        <a class="nav-heading" href="{% url 'orders:wish_list' %}"><svg class="icon"><use href="#i-heart"/></svg>許願池</a>
+        <a class="nav-link" href="{% url 'orders:wish_create' %}?type=japan_connect">日本連線<span>↗</span></a>
+        <a class="nav-link" href="{% url 'orders:wish_create' %}?type=custom">客製需求<span>↗</span></a>
+        <a class="nav-link" href="{% url 'orders:wish_create' %}?type=product_wish">商品許願<span>↗</span></a>
+      </div>
+      <div class="nav-secondary"><a href="{% url 'core:about' %}">關於我們<svg class="icon icon--small"><use href="#i-arrow"/></svg></a><a href="{% url 'core:notice' %}">購物須知<svg class="icon icon--small"><use href="#i-arrow"/></svg></a></div>
+    </nav>
+    <div class="sidebar__footer">
+      <p>保持聯繫 <span>Stay in touch</span></p>
+      {% if site_config.line_url %}<a href="{{ site_config.line_url }}" target="_blank" rel="noopener noreferrer"><svg class="icon"><use href="#i-chat"/></svg>官方 LINE ↗</a>{% endif %}
+      {% if site_config.instagram_url %}<a href="{{ site_config.instagram_url }}" target="_blank" rel="noopener noreferrer"><svg class="icon"><use href="#i-instagram"/></svg>Instagram ↗</a>{% endif %}
+      {% if site_config.gmail %}<a href="mailto:{{ site_config.gmail }}"><svg class="icon"><use href="#i-mail"/></svg>聯絡信箱 ↗</a>{% endif %}
+      {% if not site_config.line_url and not site_config.instagram_url and not site_config.gmail %}<a href="{% url 'orders:wish_create' %}"><svg class="icon"><use href="#i-mail"/></svg>留言給我們<svg class="icon icon--small"><use href="#i-arrow"/></svg></a>{% endif %}
+      <span class="sidebar__signature">with love, Lalainluv ♡</span>
+    </div>
+    {% endblock %}
+  </aside>
+  <div class="page-shell">
+    <main id="main" class="main-content">
+      {% if messages %}<div class="messages">{% for message in messages %}<div class="alert alert--{{ message.tags }}" role="status">{{ message }}<button class="alert-close" aria-label="關閉通知">×</button></div>{% endfor %}</div>{% endif %}
+      {% block main_content %}{% block content %}{% endblock %}{% endblock %}
+    </main>
+    <footer class="footer"><div><a href="/" class="footer__brand">Lalainluv</a><p>每一份拉拉熊的可愛，都值得收藏。</p></div><div class="footer__links"><a href="{% url 'core:about' %}">關於我們</a><a href="{% url 'core:notice' %}">購物須知</a><a href="{% url 'orders:order_list' %}">訂單查詢</a></div><p class="copyright">© {% now "Y" %} Lalainluv. Made with love.</p></footer>
+  </div>
+  <div id="toastContainer" class="toast-container" role="status" aria-live="polite"></div>
+  <div hidden id="csrf-token">{% csrf_token %}</div>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

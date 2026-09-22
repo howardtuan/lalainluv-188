@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block title %}寫下願望｜Lalainluv{% endblock %}
+{% block content %}<div class="narrow-page"><nav class="breadcrumb"><a href="/">首頁</a><span>/</span><a href="{% url 'orders:wish_list' %}">許願清單</a><span>/</span><span>寫下願望</span></nav><div class="page-heading"><div><span>Some wishes are worth the wait.</span><h1>你喜歡的，我們放在心上。</h1><p>告訴我們商品名稱、規格或附上連結，讓我們更接近你的心願。</p></div></div><form method="post" enctype="multipart/form-data" class="form-panel" data-single-submit>{% csrf_token %}{% include 'includes/form_fields.html' %}<p class="help-text">參考圖片支援 JPG、PNG、WebP，大小上限 5 MB。許願內容僅你與管理員可見。</p><button type="submit" class="btn btn--primary mt-24" data-label="送出我的願望">送出我的願望</button></form></div>{% endblock %}

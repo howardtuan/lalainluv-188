@@ -1,0 +1,7 @@
+{% extends 'backoffice/base.html' %}{% load humanize %}
+{% block content %}
+<div class="page-heading"><div><span>Your shop, with a little care.</span><h1>今天，也把商店照顧好。</h1><p>新訂單、庫存與首頁廣告，都在這裡。</p></div><a class="btn btn--primary" href="{% url 'backoffice:product_create' %}">＋ 新增商品</a></div>
+<div class="manage-stats"><a href="{% url 'backoffice:orders' %}?status=pending"><span>待確認訂單</span><strong>{{ pending_count }}</strong><small>查看需要處理的訂單 →</small></a><a href="{% url 'backoffice:products' %}?state=active"><span>上架商品</span><strong>{{ active_products }}</strong><small>編輯商品與照片 →</small></a><a href="{% url 'backoffice:products' %}?state=low"><span>低庫存提醒</span><strong>{{ low_stock }}</strong><small>庫存 3 件以下 →</small></a><a href="{% url 'backoffice:banners' %}"><span>啟用中輪播</span><strong>{{ active_banners }}</strong><small>更換首頁圖片 →</small></a></div>
+<section class="section"><div class="section-heading"><div><h2>最近收到的訂單</h2><p>訂單送出即完整存入後台，不會自動扣款。</p></div><a class="text-link" href="{% url 'backoffice:orders' %}">所有訂單 →</a></div>{% include 'backoffice/includes/order_table.html' with orders=recent_orders %}</section>
+<div class="manage-note"><div><h2>還有 {{ pending_wishes }} 份新願望</h2><p>看看熊迷們正在尋找什麼，回覆會同步顯示在會員的許願清單。</p></div><a class="btn btn--outline" href="{% url 'backoffice:wishes' %}">前往許願回覆 →</a></div>
+{% endblock %}

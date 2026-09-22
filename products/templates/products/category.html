@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <nav class="breadcrumb">
+        <a href="{% url 'core:home' %}">首頁</a> &gt; <span>{{ category.name }}</span>
+    </nav>
+
+    <div class="mb-5 text-center">
+        <h1 class="page-title">{{ category.name }}</h1>
+        {% if category.description %}
+        <p class="text-muted mt-3">{{ category.description|linebreaksbr }}</p>
+        {% endif %}
+    </div>
+
+    <p class="text-muted mb-4">共找到 {{ page_obj.paginator.count }} 件商品</p>
+
+    {% if page_obj %}
+    <div class="product-grid">
+        {% for product in page_obj %}
+        <div class="product-card">
+            <a href="{% url 'products:detail' product.slug %}">
+                <div class="product-card__image">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
+                    {% if product.is_new %}<span class="product-card__badge product-card__badge--new">新品</span>{% endif %}
+                    {% if product.is_hot %}<span class="product-card__badge product-card__badge--hot">熱賣</span>{% endif %}
+                    {% if product.has_discount %}<span class="product-card__badge product-card__badge--sale">-{{ product.discount_percent }}%</span>{% endif %}
+                </div>
+            </a>
+            <div class="product-card__info">
+                <a href="{% url 'products:detail' product.slug %}" class="product-card__name">{{ product.name }}</a>
+                <div class="product-card__pricing">
+                    <span class="product-card__price">NT$ {{ product.price|floatformat:0 }}</span>
+                    {% if product.has_discount %}
+                    <span class="product-card__original-price">NT$ {{ product.original_price|floatformat:0 }}</span>
+                    {% endif %}
+                </div>
+                {% if product.in_stock %}
+                <button class="btn btn--primary btn--sm btn-add-cart" data-product-id="{{ product.id }}">加入購物車</button>
+                {% else %}
+                <span class="btn btn--outline btn--sm" disabled>已售完</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if page_obj.has_other_pages %}
+    <div class="pagination mt-5 d-flex justify-content-center">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="btn btn--outline me-2">上一頁</a>
+        {% endif %}
+
+        <span class="current-page mx-3 align-self-center">第 {{ page_obj.number }} 頁，共 {{ page_obj.paginator.num_pages }} 頁</span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="btn btn--outline ms-2">下一頁</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-state__icon">🔍</div>
+        <div class="empty-state__text">此分類目前沒有商品</div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

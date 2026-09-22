@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}{% block head_title %}會員中心{% endblock %}｜Lalainluv{% endblock %}
+{% block extra_css %}{{ block.super }}{% block extra_head %}{% endblock %}{% endblock %}
+
+{% block main_content %}
+<section class="narrow-page form-panel allauth-content">
+  {% block body %}{% block content %}{% endblock %}{% endblock %}
+</section>
+{% endblock %}
+
+{% block extra_js %}{{ block.super }}{% block extra_body %}{% endblock %}{% endblock %}

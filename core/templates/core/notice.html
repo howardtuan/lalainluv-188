@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}購物須知｜Lalainluv{% endblock %}
+{% block content %}<article class="article-page"><nav class="breadcrumb"><a href="/">首頁</a><span>/</span><span>購物須知</span></nav><span class="small-script">A few things before we begin.</span><h1>把每一份期待，說清楚。</h1><p>下單前，花一點時間了解購物流程。有任何疑問，都可以透過許願表單留言給我們。</p>{% if site_config.notice %}<section class="mt-24">{{ site_config.notice|linebreaks }}</section>{% else %}
+<details class="faq" open><summary>如何訂購與付款？</summary><p>將喜歡的商品加入購物車，登入會員後填寫收件資料並送出訂單。訂單初始狀態為「待確認」，客服確認商品後會聯絡你提供付款與後續出貨資訊。送出訂單不會直接扣款。</p></details>
+<details class="faq"><summary>運費如何計算？</summary><p>宅配運費為 NT$ 60，單筆商品金額滿 NT$ 2,000 免運。結帳頁面會在送出前列出商品金額、運費與合計。</p></details>
+<details class="faq"><summary>代購商品多久會到貨？</summary><p>實際時間依商品供貨、購買地點與運輸安排而異，確認訂單時會提供預計時程。遇到缺貨或延遲會再聯絡你，也可至會員中心查詢訂單狀態。</p></details>
+<details class="faq"><summary>網站上找不到的商品可以代購嗎？</summary><p>可以透過「許願池」留下商品名稱、規格、參考連結或圖片。我們會先確認是否能協助採購，再回覆報價。提交願望不代表已成立訂單。</p></details>
+<details class="faq"><summary>收到商品有問題怎麼辦？</summary><p>請保留包裝與商品照片，透過聯絡管道提供訂單編號與問題說明。我們會確認情況後協助處理；適用的退換貨方式將依商品狀況及相關規定確認。</p></details>
+<details class="faq"><summary>我的資料會如何使用？</summary><p>會員與收件資料用於處理訂單、配送及聯絡；許願內容僅本人與管理員可查看。請勿在商品需求中提供與交易無關的敏感資料。</p></details>{% endif %}<a href="{% url 'orders:wish_create' %}" class="btn btn--outline mt-24">還有問題？留言給我們<svg class="icon"><use href="#i-mail"/></svg></a></article>{% endblock %}

@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block title %}管理員登入｜Lalainluv{% endblock %}
+{% block content %}<div class="narrow-page staff-login"><div class="page-heading"><div><span>Welcome back, shopkeeper.</span><h1>管理員登入</h1><p>照顧每一份訂單，也照顧每一份喜歡。</p></div></div><form method="post" class="form-panel">{% csrf_token %}{% include 'includes/form_fields.html' %}<input type="hidden" name="next" value="{{ next }}"><button class="btn btn--primary btn--full" type="submit">進入商店管理 →</button><p class="help-text mt-24">使用管理員專用帳密登入，無須綁定 LINE 或 Google。</p></form><a class="text-link mt-24" href="{% url 'core:home' %}">← 返回商店</a></div>{% endblock %}

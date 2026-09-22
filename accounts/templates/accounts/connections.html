@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}帳號綁定｜Lalainluv{% endblock %}
+{% block content %}
+<div class="narrow-page">
+  <div class="page-heading"><div><span>A familiar way to sign in.</span><h1>{% if binding_required %}再一步，完成帳號綁定。{% else %}我的登入方式{% endif %}</h1><p>綁定後，可以用 LINE 或 Google 直接登入同一個帳號，訂單與許願紀錄都會保留。</p></div></div>
+  {% if binding_required %}<div class="notice-box" role="status">你的內建帳號已建立。請完成下方任一項正式授權綁定，才能繼續下單及使用會員功能。填寫 LINE ID 不等於完成綁定。</div>{% endif %}
+  <div class="form-panel">
+    <h2>{% if connected_accounts %}已連結的帳號{% else %}選擇一個熟悉的登入方式{% endif %}</h2>
+    {% for account in connected_accounts %}<div class="connected-account"><div><strong>{% if account.provider == 'line' %}LINE{% else %}Google{% endif %}</strong><p>{{ account.get_provider_account }}</p></div><span class="status-tag status-tag--completed">已綁定</span></div>{% endfor %}
+    {% if user.is_staff %}<div class="notice-box">管理員使用內建帳密即可，無須綁定社群帳號。</div>{% endif %}
+    {% include 'includes/social_buttons.html' with process='connect' %}
+    {% if connected_accounts %}<p class="text-small mt-24">至少需保留一個綁定。<a class="form-link" href="{% url 'socialaccount_connections' %}">管理已連結帳號</a></p><a class="btn btn--primary mt-24" href="{{ next_url }}">繼續使用網站 →</a>{% endif %}
+  </div>
+  {% if binding_required %}<form class="mt-24" method="post" action="{% url 'account_logout' %}">{% csrf_token %}<button class="btn btn--outline" type="submit">先登出，稍後再綁定</button></form>{% endif %}
+</div>
+{% endblock %}
